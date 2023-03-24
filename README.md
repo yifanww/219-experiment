@@ -1,1 +1,1 @@
-# social-cues-and-intrinsic-curiousity
+# Social Cues and Intrinsic Curiousity
