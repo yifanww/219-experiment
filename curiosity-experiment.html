@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>Response Time</title>
+    <title>Social vs. visual Curiosity</title>
     <script src="https://unpkg.com/jspsych@7.3.1"></script>
     <script src="https://unpkg.com/@jspsych/plugin-html-keyboard-response@1.1.2"></script>
     <script src="https://unpkg.com/@jspsych/plugin-image-keyboard-response@1.1.2"></script>
@@ -97,24 +97,6 @@
       repetitions: 5
     }
     timeline.push(test_procedure);
-
-    /* debrief_block */
-    var debrief_block = {
-      type: jsPsychHtmlKeyboardResponse,
-      stimulus: function() {
-
-        var trials = jsPsych.data.get().filter({task: 'response'});
-        var correct_trials = trials.filter({correct: true});
-        var accuracy = Math.round(correct_trials.count() / trials.count() * 100);
-        var rt = Math.round(correct_trials.select('rt').mean());
-
-        return `<p>You responded correctly on ${accuracy}% of the trials.</p>
-          <p>Your average response time was ${rt}ms.</p>
-          <p>Press any key to complete the experiment. Thank you!</p>`;
-
-      }
-    };
-    timeline.push(debrief_block);
 
     /* run the experiment */
     jsPsych.run(timeline);
