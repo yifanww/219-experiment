@@ -88,17 +88,65 @@
       choices: ['ArrowLeft', 'ArrowRight'],
       prompt: "<p>Which one do you want to reveal?</p>",
       data: {
-        task: 'response',
+        task: 'choice',
       }
     }
 
     /* reveal page */
+    var reveal = {
+      type: jsPsychHtmlKeyboardResponse,
+      stimulus: function(){
+        var practiceResponse0 = jsPsych.data.get().filter({ task: 'choice' }).last(1).values[0];
+        if (practiceResponse0 = 'ArrowLeft') {
+        var html =
+          `<div class="row">
+            <div class="column">
+              <p>number of upvotes: ${jsPsych.timelineVariable('n_of_upvotesL')}</p>
+              <img src= ${jsPsych.timelineVariable('imgL')} style="width:50%">
+            </div>
+            <div class="column">
+              <p>number of upvotes: ${jsPsych.timelineVariable('n_of_upvotesR')}</p>
+              <img src= ${jsPsych.timelineVariable('blur_imgR')} style="width:50%">
+            </div>
+          </div>
+          `;
+          }
+        if (practiceResponse0 = 'ArrowRight') {
+        var html =
+        `<div class="row">
+            <div class="column">
+              <p>number of upvotes: ${jsPsych.timelineVariable('n_of_upvotesL')}</p>
+              <img src= ${jsPsych.timelineVariable('blur_imgL')} style="width:50%">
+            </div>
+            <div class="column">
+              <p>number of upvotes: ${jsPsych.timelineVariable('n_of_upvotesR')}</p>
+              <img src= ${jsPsych.timelineVariable('imgR')} style="width:50%">
+            </div>
+          </div>
+          `;
+          }
+        return html;
+      },
+      choices: ['ArrowLeft', 'ArrowRight'],
+      prompt: function(){
+        var practiceResponse0 = jsPsych.data.get().filter({ task: 'choice' }).last(1).values[0];
+        var html;
+        if (practiceResponse0 = 'ArrowLeft') {
+          html = "<p>You chose the left image</p>";
+          }
+        else if (practiceResponse0 = 'ArrowRight') {
+          html = "<p>You chose the right image</p>";
+          }
+        return html;
+      },
+      choices: "NO_KEYS",
+      trial_duration: 2000
+    }
 
     /* test procedure */
     var test_procedure = {
-      timeline: [choice],
+      timeline: [choice, reveal],
       timeline_variables: test_stimuli,
-      repetitions: 2
     }
     timeline.push(test_procedure);
 
