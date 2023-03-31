@@ -8,6 +8,15 @@
     <script src="https://unpkg.com/@jspsych/plugin-preload@1.1.2"></script>
     <link href="https://unpkg.com/jspsych@7.3.1/css/jspsych.css" rel="stylesheet" type="text/css" />
   </head>
+  <style>
+    .row {
+    display: flex;
+    }
+    .column {
+    flex: 33.33%;
+    padding: 5px;
+    }
+  </style>
   <body></body>
   <script>
 
@@ -47,28 +56,43 @@
         <p>On the next slide, you will see the images. Press <strong>"←”</strong> on your keyboard to select the left image or <strong>“→”</strong> to select the right image.</p>
         <p>Press any key to begin the tutorial.</p>
       `,
-    post_trial_gap: 2000
     };
     timeline.push(instructions);
 
     /* trial stimulus variable */
     var test_stimuli = [
-      {img: "imgs/img-1.png", blur_img: "imgs/img-1.png", n_of_upvotes: 1731, blur_level: 0},
-      {img: "imgs/img-2.png", blur_img: "imgs/img-2.png", n_of_upvotes: 2579, blur_level: 0},
+      {
+       imgL: "imgs/img-1.png", blur_imgL: "imgs/img-1.png", n_of_upvotesL: 1731, blur_levelL: 0,
+       imgR: "imgs/img-2.png", blur_imgR: "imgs/img-2.png", n_of_upvotesR: 2579, blur_levelR: 0
+      },
     ];
 
     /* choice page*/
     var choice = {
-      type: jsPsychImageKeyboardResponse,
-      stimulus: jsPsych.timelineVariable('blur_img'),
+      type: jsPsychHtmlKeyboardResponse,
+      stimulus: function(){
+        var html =
+          `<div class="row">
+            <div class="column">
+              <p>number of upvotes: ${jsPsych.timelineVariable('n_of_upvotesL')}</p>
+              <img src= ${jsPsych.timelineVariable('blur_imgL')} style="width:50%">
+            </div>
+            <div class="column">
+              <p>number of upvotes: ${jsPsych.timelineVariable('n_of_upvotesR')}</p>
+              <img src= ${jsPsych.timelineVariable('blur_imgR')} style="width:50%">
+            </div>
+          </div>
+          `;
+        return html;
+      },
       choices: ['ArrowLeft', 'ArrowRight'],
+      prompt: "<p>Which one do you want to reveal?</p>",
       data: {
         task: 'response',
       }
     }
 
     /* reveal page */
-
 
     /* test procedure */
     var test_procedure = {
