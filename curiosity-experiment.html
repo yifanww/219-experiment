@@ -20,6 +20,8 @@
   <body></body>
   <script>
 
+    var choice;
+
     /* initialize jsPsych */
     var jsPsych = initJsPsych({
       on_finish: function() {
@@ -41,45 +43,45 @@
     /* welcome message */
     var welcome = {
       type: jsPsychHtmlKeyboardResponse,
-      stimulus: "Welcome to the experiment. Press any key to begin."
+      stimulus: `<p>Welcome to the experiment</p><br><p>Press any key to begin.</p>`
     }
-    timeline.push(welcome);
 
     /* instruction page */
-    var instructions = {
+    var instruction = {
       type: jsPsychHtmlKeyboardResponse,
       stimulus: `
         <p>In each trial, you will see two different images and the number of upvotes they each received.</p>
         <p>Both images are initially blurred, and you can choose only one of them to reveal.</p>
         <p>The image you select will unblur itself, and the other one will stay the same.</p>
-        <p></p>
+        <br>
         <p>On the next slide, you will see the images. Press <strong>"←”</strong> on your keyboard to select the left image or <strong>“→”</strong> to select the right image.</p>
         <p>Press any key to begin the tutorial.</p>
       `,
     };
-    timeline.push(instructions);
 
-    /* trial stimulus variable */
-    var test_stimuli = [
+    /* practice stimulus variable */
+    var practice_stimuli = [
       {
-       imgL: "imgs/img-1.png", blur_imgL: "imgs/img-1.png", n_of_upvotesL: 1731, blur_levelL: 0,
-       imgR: "imgs/img-2.png", blur_imgR: "imgs/img-2.png", n_of_upvotesR: 2579, blur_levelR: 0
+       imgL: "imgs/img-1.png", n_of_upvotesL: 1731, blur_levelL: 10,
+       imgR: "imgs/img-2.png", n_of_upvotesR: 2579, blur_levelR: 30
       },
     ];
 
-    /* choice page*/
-    var choice = {
+    /* choose trial*/
+    var choose = {
       type: jsPsychHtmlKeyboardResponse,
       stimulus: function(){
         var html =
           `<div class="row">
             <div class="column">
               <p>number of upvotes: ${jsPsych.timelineVariable('n_of_upvotesL')}</p>
-              <img src= ${jsPsych.timelineVariable('blur_imgL')} style="width:50%">
+              <br>
+              <img src= ${jsPsych.timelineVariable('imgL')} style="width:50%; filter: blur(${jsPsych.timelineVariable('blur_levelL') + "px"})">
             </div>
             <div class="column">
               <p>number of upvotes: ${jsPsych.timelineVariable('n_of_upvotesR')}</p>
-              <img src= ${jsPsych.timelineVariable('blur_imgR')} style="width:50%">
+              <br>
+              <img src= ${jsPsych.timelineVariable('imgR')} style="width:50%; filter: blur(${jsPsych.timelineVariable('blur_levelR') + "px"})">
             </div>
           </div>
           `;
@@ -88,69 +90,89 @@
       choices: ['ArrowLeft', 'ArrowRight'],
       prompt: "<p>Which one do you want to reveal?</p>",
       data: {
-        task: 'choice',
-      }
+        task: "choice_response",
+      },
+      on_finish: function(data){
+        choice = data.response;
+       }
     }
 
-    /* reveal page */
+    /* reveal trial */
     var reveal = {
       type: jsPsychHtmlKeyboardResponse,
       stimulus: function(){
-        var practiceResponse0 = jsPsych.data.get().filter({ task: 'choice' }).last(1).values[0];
-        if (practiceResponse0 = 'ArrowLeft') {
-        var html =
+        if (choice == 'arrowleft') {
+          var html =
           `<div class="row">
             <div class="column">
               <p>number of upvotes: ${jsPsych.timelineVariable('n_of_upvotesL')}</p>
+              <br>
               <img src= ${jsPsych.timelineVariable('imgL')} style="width:50%">
             </div>
             <div class="column">
               <p>number of upvotes: ${jsPsych.timelineVariable('n_of_upvotesR')}</p>
-              <img src= ${jsPsych.timelineVariable('blur_imgR')} style="width:50%">
+              <br>
+              <img src= ${jsPsych.timelineVariable('imgR')} style="width:50%; filter: blur(${jsPsych.timelineVariable('blur_levelR') + "px"})">
             </div>
           </div>
+          <p>You chose the left image</p>
+          <p>Press any key to continue</p>
           `;
           }
-        if (practiceResponse0 = 'ArrowRight') {
-        var html =
-        `<div class="row">
+        else if (choice == 'arrowright') {
+         var html =
+         `<div class="row">
             <div class="column">
               <p>number of upvotes: ${jsPsych.timelineVariable('n_of_upvotesL')}</p>
-              <img src= ${jsPsych.timelineVariable('blur_imgL')} style="width:50%">
+              <br>
+              <img src= ${jsPsych.timelineVariable('imgL')} style="width:50%; filter: blur(${jsPsych.timelineVariable('blur_levelL') + "px"})">
             </div>
             <div class="column">
               <p>number of upvotes: ${jsPsych.timelineVariable('n_of_upvotesR')}</p>
+              <br>
               <img src= ${jsPsych.timelineVariable('imgR')} style="width:50%">
             </div>
           </div>
+          <p>You chose the right image</p>
+          <p>Press any key to continue</p>
           `;
-          }
+         }
         return html;
       },
-      choices: ['ArrowLeft', 'ArrowRight'],
-      prompt: function(){
-        var practiceResponse0 = jsPsych.data.get().filter({ task: 'choice' }).last(1).values[0];
-        var html;
-        if (practiceResponse0 = 'ArrowLeft') {
-          html = "<p>You chose the left image</p>";
-          }
-        else if (practiceResponse0 = 'ArrowRight') {
-          html = "<p>You chose the right image</p>";
-          }
-        return html;
-      },
-      choices: "NO_KEYS",
-      trial_duration: 2000
     }
 
-    /* test procedure */
-    var test_procedure = {
-      timeline: [choice, reveal],
-      timeline_variables: test_stimuli,
+    /* trial practice end */
+    var practice_end = {
+      type: jsPsychHtmlKeyboardResponse,
+      stimulus: `
+        <p>You have completed the tutorial!</p>
+        <p>The experiment will begin starting from the next slide.</p>
+        <br>
+        <p>Press any key to continue when you are ready.</p>
+      `,
     }
-    timeline.push(test_procedure);
+
+    /* practice procedure */
+    var practice_procedure = {
+      timeline: [choose, reveal, practice_end],
+      timeline_variables: practice_stimuli
+    }
+
+    /* debrief block */
+    var debrief_block =
+      {
+        type: jsPsychHtmlKeyboardResponse,
+        stimulus: `
+        <p>Thank you for participating!</p>`,
+        choices: "NO_KEYS"
+      };
+
 
     /* run the experiment */
+    timeline.push(welcome);
+    timeline.push(instruction);
+    timeline.push(practice_procedure);
+    timeline.push(debrief_block);
     jsPsych.run(timeline);
 
   </script>
