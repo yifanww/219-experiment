@@ -1,126 +1,61 @@
 <!DOCTYPE html>
 <html>
+
 <head>
   <title>Social Curiosity</title>
   <script src="https://unpkg.com/jspsych@7.3.1"></script>
   <script src="https://unpkg.com/@jspsych/plugin-html-keyboard-response@1.1.2"></script>
   <script src="https://unpkg.com/@jspsych/plugin-image-keyboard-response@1.1.2"></script>
   <script src="https://unpkg.com/@jspsych/plugin-preload@1.1.2"></script>
+  <script src="create-stimulus.js"></script>
   <link href="https://unpkg.com/jspsych@7.3.1/css/jspsych.css" rel="stylesheet" type="text/css" />
 </head>
 <style>
-    body {
-      background-color: #444;
-      color: white;
-    }
-    .row {
+  body {
+    background-color: #444;
+    color: white;
+  }
+
+  .row {
     display: flex;
-    }
-    .column {
+  }
+
+  .column {
     flex: 33.33%;
     padding: 5px;
-    }
-  </style>
+  }
+</style>
+
 <body></body>
 <script>
+  /* initialize jsPsych */
+  var jsPsych = initJsPsych();
 
-    var choice;
+  /* initialize timeline */
+  var timeline = [];
 
-    var practice_img =
-        ['imgs/img-1.png',
-         'imgs/img-2.png'];
+  /* initialize variables */
+  var choice; // participant's choice
+  var shuffled_set = chunk(shuffle(stimuli_set), 2); // generate randomized image pairs
+  var blurriness = chunk(randomBlur(5, 50), 2); // generate randomized levels of blurriness from 5 to 50
 
-    var img_set = [
-        'imgs/img-3.png',
-        'imgs/img-4.png',
-        'imgs/img-5.png',
-        'imgs/img-6.png',
-        'imgs/img-7.png',
-        'imgs/img-8.png',
-        'imgs/img-9.png',
-        'imgs/img-10.png',
-        'imgs/img-11.png',
-        'imgs/img-12.png',
-        'imgs/img-13.png',
-        'imgs/img-14.png',
-        'imgs/img-15.png',
-        'imgs/img-16.png'
-    ];
+  /* preload images */
+  var preload = {
+    type: jsPsychPreload,
+    images: practice_img.concat(img_set)
+  };
+  timeline.push(preload);
 
-    /* generating random variable */
-    // image constructor
-    var stimuli_set = [
-      {id: 1, file: "imgs/img-3.png", upvote: 1510},
-      {id: 2, file: "imgs/img-4.png", upvote: 1508},
-      {id: 3, file: "imgs/img-5.png", upvote: 1214},
-      {id: 4, file: "imgs/img-6.png", upvote: 1014},
-      {id: 5, file: "imgs/img-7.png", upvote: 976},
-      {id: 6, file: "imgs/img-8.png", upvote: 928},
-      {id: 7, file: "imgs/img-9.png", upvote: 651},
-      {id: 8, file: "imgs/img-10.png", upvote: 3317},
-      {id: 9, file: "imgs/img-11.png", upvote: 2768},
-      {id: 10, file: "imgs/img-12.png", upvote: 1615},
-      {id: 11, file: "imgs/img-13.png", upvote: 1394},
-      {id: 12, file: "imgs/img-14.png", upvote: 638},
-      {id: 13, file: "imgs/img-15.png", upvote: 867},
-      {id: 14, file: "imgs/img-16.png", upvote: 835},
-    ]
+  /* welcome trial */
+  var welcome = {
+    type: jsPsychHtmlKeyboardResponse,
+    stimulus: `<p>Welcome to the experiment</p><br><p>Press any key to begin.</p>`
+  }
 
-    function shuffle(a) {
-      var j, x, i;
-      for (i = a.length - 1; i > 0; i--) {
-          j = Math.floor(Math.random() * (i + 1));
-          x = a[i];
-          a[i] = a[j];
-          a[j] = x;
-      }
-      return a;
-    }
-
-    function chunk(arr, chunkSize) {
-      var array = [];
-      for (var i=0,len=arr.length; i<len; i+=chunkSize)
-        array.push(arr.slice(i,i+chunkSize));
-      return array;
-    }
-
-    var shuffled_set = chunk(shuffle(stimuli_set), 2);
-
-    // random blur
-    var blurriness = [];
-    for (let i = 0; i < 2*shuffled_set.length; i++) {
-      let randomNumber = Math.floor(Math.random() * (50 - 5 + 1)) + 10;
-      blurriness.push(randomNumber);
-    }
-    blurriness = chunk(blurriness, 2);
-
-    /* initialize jsPsych */
-    var jsPsych = initJsPsych({
-      on_finish: function() {
-        jsPsych.data.displayData();
-      }
-    });
-
-    /* initialize timeline */
-    var timeline = [];
-
-    /* preload images */
-    var preload = {
-      type: jsPsychPreload,
-      images: practice_img.concat(img_set)
-    };
-    timeline.push(preload);
-
-    /* welcome message */
-    var welcome = {
-      type: jsPsychHtmlKeyboardResponse,
-      stimulus: `<p>Welcome to the experiment</p><br><p>Press any key to begin.</p>`
-    }
-
-    /* instruction page */
-    var instruction = {
-      type: jsPsychHtmlKeyboardResponse,
-      stimulus: `
+  /* instruction trial */
+  var instruction = {
+    type: jsPsychHtmlKeyboardResponse,
+    stimulus: `
         <p>In each trial, you will see two different images and the number of upvotes they each received.</p>
         <p>Both images are initially blurred, and you can choose only one of them to reveal.</p>
         <p>The image you select will unblur itself, and the other one will stay the same.</p>
@@ -128,33 +63,33 @@
         <p>On the next slide, you will see the images. Press <strong>"←”</strong> on your keyboard to select the left image or <strong>“→”</strong> to select the right image.</p>
         <p>Press any key to begin the tutorial.</p>
       `,
-    };
+  };
 
-    /* practice stimulus variable */
-    var practice_stimuli = [
+  /* practice stimulus variable */
+  var practice_stimuli = [
+    {
+      imgL: "imgs/img-1.png", n_of_upvotesL: 1731, blur_levelL: 10,
+      imgR: "imgs/img-2.png", n_of_upvotesR: 2579, blur_levelR: 30
+    },
+  ];
+
+  /* test stimulus variable */
+  var test_stimuli = [];
+  for (let i = 0; i < shuffled_set.length; i++) {
+    test_stimuli.push(
       {
-       imgL: "imgs/img-1.png", n_of_upvotesL: 1731, blur_levelL: 10,
-       imgR: "imgs/img-2.png", n_of_upvotesR: 2579, blur_levelR: 30
-      },
-    ];
+        idL: shuffled_set[i][0].id, imgL: shuffled_set[i][0].file, n_of_upvotesL: shuffled_set[i][0].upvote, blur_levelL: blurriness[i][0],
+        idR: shuffled_set[i][1].id, imgR: shuffled_set[i][1].file, n_of_upvotesR: shuffled_set[i][1].upvote, blur_levelR: blurriness[i][1]
+      }
+    )
+  };
 
-    /* test stimulus variable */
-    var test_stimuli = [];
-    for (let i = 0; i < shuffled_set.length; i++){
-      test_stimuli.push(
-        {
-         idL: shuffled_set[i][0].id, imgL: shuffled_set[i][0].file, n_of_upvotesL: shuffled_set[i][0].upvote, blur_levelL: blurriness[i][0],
-         idR: shuffled_set[i][1].id, imgR: shuffled_set[i][1].file, n_of_upvotesR: shuffled_set[i][1].upvote, blur_levelR: blurriness[i][1]
-        }
-      )
-    };
-
-    /* choose trial*/
-    var choose = {
-      type: jsPsychHtmlKeyboardResponse,
-      stimulus: function(){
-        var html =
-          `<div class="row">
+  /* choose trial*/
+  var choose = {
+    type: jsPsychHtmlKeyboardResponse,
+    stimulus: function () {
+      var html =
+        `<div class="row">
             <div class="column">
               <p>number of upvotes: ${jsPsych.timelineVariable('n_of_upvotesL')}</p>
               <br>
@@ -167,24 +102,24 @@
             </div>
           </div>
           `;
-        return html;
-      },
-      choices: ['ArrowLeft', 'ArrowRight'],
-      prompt: `<p>Which one do you want to reveal?</p>`,
-      data: {
-        task: "choice_response",
-      },
-      on_finish: function(data){
-        choice = data.response;
-       }
+      return html;
+    },
+    choices: ['ArrowLeft', 'ArrowRight'],
+    prompt: `<p>Which one do you want to reveal?</p>`,
+    data: {
+      task: "choice_response",
+    },
+    on_finish: function (data) {
+      choice = data.response;
     }
+  }
 
-    /* reveal trial */
-    var reveal = {
-      type: jsPsychHtmlKeyboardResponse,
-      stimulus: function(){
-        if (choice == 'arrowleft') {
-          var html =
+  /* reveal trial */
+  var reveal = {
+    type: jsPsychHtmlKeyboardResponse,
+    stimulus: function () {
+      if (choice == 'arrowleft') {
+        var html =
           `<div class="row">
             <div class="column">
               <p>number of upvotes: ${jsPsych.timelineVariable('n_of_upvotesL')}</p>
@@ -200,10 +135,10 @@
           <p>You chose the left image</p>
           <p>Press any key to continue</p>
           `;
-          }
-        else if (choice == 'arrowright') {
-         var html =
-         `<div class="row">
+      }
+      else if (choice == 'arrowright') {
+        var html =
+          `<div class="row">
             <div class="column">
               <p>number of upvotes: ${jsPsych.timelineVariable('n_of_upvotesL')}</p>
               <br>
@@ -218,50 +153,51 @@
           <p>You chose the right image</p>
           <p>Press any key to continue</p>
           `;
-         }
-        return html;
-      },
-    }
+      }
+      return html;
+    },
+  }
 
-    /* trial practice end */
-    var practice_end = {
-      type: jsPsychHtmlKeyboardResponse,
-      stimulus: `
+  /* trial practice end */
+  var practice_end = {
+    type: jsPsychHtmlKeyboardResponse,
+    stimulus: `
         <p>You have completed the tutorial!</p>
         <p>The experiment will begin starting from the next slide.</p>
         <br>
         <p>Press any key to continue when you are ready.</p>
       `,
-    }
+  }
 
-    /* practice procedure */
-    var practice_procedure = {
-      timeline: [choose, reveal, practice_end],
-      timeline_variables: practice_stimuli
-    }
+  /* practice procedure */
+  var practice_procedure = {
+    timeline: [choose, reveal, practice_end],
+    timeline_variables: practice_stimuli
+  }
 
-    var test_procedure = {
-      timeline: [choose, reveal],
-      timeline_variables: test_stimuli
-    }
+  /* test procedure */
+  var test_procedure = {
+    timeline: [choose, reveal],
+    timeline_variables: test_stimuli
+  }
 
-    /* debrief block */
-    var debrief_block =
-      {
-        type: jsPsychHtmlKeyboardResponse,
-        stimulus: `
+  /* debrief block */
+  var debrief_block =
+  {
+    type: jsPsychHtmlKeyboardResponse,
+    stimulus: `
         <p>Thank you for participating!</p>`,
-        choices: "NO_KEYS"
-      };
+    choices: "NO_KEYS"
+  };
 
+  /* run the experiment */
+  timeline.push(welcome);
+  timeline.push(instruction);
+  timeline.push(practice_procedure);
+  timeline.push(test_procedure);
+  timeline.push(debrief_block);
+  jsPsych.run(timeline);
 
-    /* run the experiment */
-    timeline.push(welcome);
-    timeline.push(instruction);
-    timeline.push(practice_procedure);
-    timeline.push(test_procedure);
-    timeline.push(debrief_block);
-    jsPsych.run(timeline);
+</script>
 
-  </script>
 </html>
