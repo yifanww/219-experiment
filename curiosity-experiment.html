@@ -52,18 +52,44 @@
     stimulus: `<p>Welcome to the experiment</p><br><p>Press any key to begin.</p>`
   }
 
-  /* instruction trial */
-  var instruction = {
+  /* instruction trials */
+  var instruction_1 = {
     type: jsPsychHtmlKeyboardResponse,
     stimulus: `
-        <p>In each trial, you will see two different images and the number of upvotes they each received.</p>
-        <p>Both images are initially blurred, and you can choose only one of them to reveal.</p>
-        <p>The image you select will unblur itself, and the other one will stay the same.</p>
+        <p>In each trial, you will see two different images sourced from a popular social platform.</p>
+        <p>Each image will have an upvote count above it.</p>
+        <p>An upvote is a like given by users of the platform and helps promote quality content and discussion on the platform.</p>
+        <p>A higher upvote count means a high percentage of users have liked the post and the post will appear at the top of the platform’s algorithm.</p>
         <br>
-        <p>On the next slide, you will see the images. Press <strong>"←”</strong> on your keyboard to select the left image or <strong>“→”</strong> to select the right image.</p>
-        <p>Press any key to begin the tutorial.</p>
+        <p>Press any key to continue.</p>
       `,
   };
+  
+  var instruction_2 = {
+    type: jsPsychHtmlKeyboardResponse,
+    stimulus: `
+        <p>At the start of every trial, both images will be blurred.</p>
+        <p>You will get 10 seconds to choose which image you would like to reveal.</p>
+        <p>The image you select will unblur itself, and the other one will stay the same.</p>
+        <br>
+        <p>Press any key to continue.</p>
+      `,
+  };
+  
+var instruction_3 = {
+    type: jsPsychHtmlKeyboardResponse,
+    stimulus: `
+        <p>We will now go through 2 practice trials.</p>
+        <p>Press “←” on your keyboard to select the left image or “→” to select the right image.</p>
+        <br>
+        <p>On the next slide, you will see the images. Press any key to continue.</p>
+      `,
+  };
+  
+  var instruction_proc = {
+    timeline: [instruction_1, instruction_2, instruction_3]
+  }
+  
 
   /* practice stimulus variable */
   var practice_stimuli = [
@@ -192,7 +218,7 @@
 
   /* run the experiment */
   timeline.push(welcome);
-  timeline.push(instruction);
+  timeline.push(instruction_proc);
   timeline.push(practice_procedure);
   timeline.push(test_procedure);
   timeline.push(debrief_block);
