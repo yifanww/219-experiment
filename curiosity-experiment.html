@@ -90,26 +90,7 @@ var instruction_3 = {
     timeline: [instruction_1, instruction_2, instruction_3]
   }
   
-
-  /* practice stimulus variable */
-  var practice_stimuli = [
-    {
-      imgL: "imgs/img-1.png", n_of_upvotesL: 1731, blur_levelL: 10,
-      imgR: "imgs/img-2.png", n_of_upvotesR: 2579, blur_levelR: 30
-    },
-  ];
-
-  /* test stimulus variable */
-  var test_stimuli = [];
-  for (let i = 0; i < shuffled_set.length; i++) {
-    test_stimuli.push(
-      {
-        idL: shuffled_set[i][0].id, imgL: shuffled_set[i][0].file, n_of_upvotesL: shuffled_set[i][0].upvote, blur_levelL: blurriness[i][0],
-        idR: shuffled_set[i][1].id, imgR: shuffled_set[i][1].file, n_of_upvotesR: shuffled_set[i][1].upvote, blur_levelR: blurriness[i][1]
-      }
-    )
-  };
-
+  /** Reusable Trials **/
   /* choose trial*/
   var choose = {
     type: jsPsychHtmlKeyboardResponse,
@@ -184,6 +165,16 @@ var instruction_3 = {
     },
   }
 
+
+  /** Practice Trials **/
+  /* practice stimulus variable */
+  var practice_stimuli = [
+    {
+      imgL: "imgs/img-1.png", n_of_upvotesL: 1731, blur_levelL: 10,
+      imgR: "imgs/img-2.png", n_of_upvotesR: 2579, blur_levelR: 30
+    },
+  ];
+
   /* trial practice end */
   var practice_end = {
     type: jsPsychHtmlKeyboardResponse,
@@ -200,6 +191,18 @@ var instruction_3 = {
     timeline: [choose, reveal, practice_end],
     timeline_variables: practice_stimuli
   }
+
+  /** Test Trials **/
+  /* test stimulus variable */
+  var test_stimuli = [];
+  for (let i = 0; i < shuffled_set.length; i++) {
+    test_stimuli.push(
+      {
+        idL: shuffled_set[i][0].id, imgL: shuffled_set[i][0].file, n_of_upvotesL: shuffled_set[i][0].upvote, blur_levelL: blurriness[i][0],
+        idR: shuffled_set[i][1].id, imgR: shuffled_set[i][1].file, n_of_upvotesR: shuffled_set[i][1].upvote, blur_levelR: blurriness[i][1]
+      }
+    )
+  };
 
   /* test procedure */
   var test_procedure = {
