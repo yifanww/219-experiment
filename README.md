@@ -4,7 +4,7 @@ We are investigating how social cues may affect a participant’s curiosity towa
 
 ## TODO:
 - [x] update instructions
-- [ ] more practice trials
+- [ ] more practice trials (upload 4 additional images to dataset)
 - [ ] update the image set
 - [ ] update how the data is collected in choose trials
 - [ ] add attention checks & trial durations
