@@ -170,8 +170,12 @@ var instruction_3 = {
   /* practice stimulus variable */
   var practice_stimuli = [
     {
-      imgL: "imgs/img-1.png", n_of_upvotesL: 1731, blur_levelL: 10,
-      imgR: "imgs/img-2.png", n_of_upvotesR: 2579, blur_levelR: 30
+      imgL: "imgs/img-prac-1.png", n_of_upvotesL: 2458, blur_levelL: 40,
+      imgR: "imgs/img-prac-2.png", n_of_upvotesR: 898, blur_levelR: 20
+    },
+    {
+      imgL: "imgs/img-prac-3.png", n_of_upvotesL: 1149, blur_levelL: 10,
+      imgR: "imgs/img-prac-4.png", n_of_upvotesR: 1529, blur_levelR: 15
     },
   ];
 
@@ -188,7 +192,7 @@ var instruction_3 = {
 
   /* practice procedure */
   var practice_procedure = {
-    timeline: [choose, reveal, practice_end],
+    timeline: [choose, reveal],
     timeline_variables: practice_stimuli
   }
 
@@ -223,6 +227,7 @@ var instruction_3 = {
   timeline.push(welcome);
   timeline.push(instruction_proc);
   timeline.push(practice_procedure);
+  timeline.push(practice_end);
   timeline.push(test_procedure);
   timeline.push(debrief_block);
   jsPsych.run(timeline);
