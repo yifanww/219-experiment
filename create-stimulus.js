@@ -1,10 +1,13 @@
 /* variable declaration */
 var practice_img = [ // images used in practice trials
-    'imgs/img-1.png',
-    'imgs/img-2.png'
-]
+    'imgs/img-prac-1.png',
+    'imgs/img-prac-2.png',
+    'imgs/img-prac-3.png',
+    'imgs/img-prac-4.png']
 
 var img_set = [ // images used in actual experiment 
+    'imgs/img-1.png',
+    'imgs/img-2.png',
     'imgs/img-3.png',
     'imgs/img-4.png',
     'imgs/img-5.png',
@@ -18,7 +21,33 @@ var img_set = [ // images used in actual experiment
     'imgs/img-13.png',
     'imgs/img-14.png',
     'imgs/img-15.png',
-    'imgs/img-16.png'
+    'imgs/img-16.png',
+    'imgs/img-17.png',
+    'imgs/img-18.png',
+    'imgs/img-19.png',
+    'imgs/img-20.png',
+    'imgs/img-21.png',
+    'imgs/img-22.png',
+    'imgs/img-23.png',
+    'imgs/img-24.png',
+    'imgs/img-25.png',
+    'imgs/img-26.png',
+    'imgs/img-27.png',
+    'imgs/img-28.png',
+    'imgs/img-29.png',
+    'imgs/img-30.png',
+    'imgs/img-31.png',
+    'imgs/img-32.png',
+    'imgs/img-33.png',
+    'imgs/img-34.png',
+    'imgs/img-35.png',
+    'imgs/img-36.png',
+    'imgs/img-37.png',
+    'imgs/img-38.png',
+    'imgs/img-39.png',
+    'imgs/img-40.png',
+    'imgs/img-41.png',
+    'imgs/img-42.png'
 ]
 
 var stimuli_set = [ // array of the images along with their upvotes **upcoming images & upvote counts add here**
