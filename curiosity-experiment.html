@@ -115,8 +115,12 @@
     choices: ['ArrowLeft', 'ArrowRight'],
     prompt: `<p>Which one do you want to reveal?</p>`,
     data: {
-      task: "choice_response",
-
+      left_img: () => jsPsych.timelineVariable("idL"),
+      left_blur: () => jsPsych.timelineVariable("blur_levelL"),
+      right_img: () => jsPsych.timelineVariable("idR"),
+      right_img: () => jsPsych.timelineVariable("blue_levelR"),
+      choice: "response",
+      rt: "rt"
     },
     on_finish: function (data) {
       choice = data.response;
