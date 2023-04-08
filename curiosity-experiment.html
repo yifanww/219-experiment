@@ -35,6 +35,7 @@
   var timeline = [];
 
   /* initialize variables */
+  var trial_n = 1;
   var pass;
   var choice; // participant's choice
   var shuffled_set = chunk(shuffle(stimuli_set), 2); // generate randomized image pairs
@@ -92,6 +93,20 @@
   }
 
   /** Reusable Trials **/
+  /* start trial */
+  var trial_start = {
+      type: jsPsychHtmlKeyboardResponse,
+      stimulus: function () {
+        var html = `
+          <p>Trial ${trial_n} of 21</p>
+        `;
+        trial_n++;
+        return html;
+      },
+      choices: "NO_KEYS",
+      trial_duration: 2000
+    }
+
   /* choose trial*/
   var choose = {
     type: jsPsychHtmlKeyboardResponse,
@@ -118,16 +133,18 @@
       left_img: () => jsPsych.timelineVariable("idL"),
       left_blur: () => jsPsych.timelineVariable("blur_levelL"),
       right_img: () => jsPsych.timelineVariable("idR"),
-      right_img: () => jsPsych.timelineVariable("blue_levelR"),
+      right_blur: () => jsPsych.timelineVariable("blue_levelR"),
       choice: "response",
-      rt: "rt"
+      catch: "pass"
     },
     on_finish: function (data) {
       choice = data.response;
       if (data.rt < 500) {
+        data.catch = false;
         pass = false;
       }
       else {
+        data.catch = true;
         pass = true;
       }
     }
@@ -184,6 +201,22 @@
         return html;
       }
     },
+    trial_duration: function(){
+      if (pass) {
+        return null;
+      }
+      else {
+        return 2000;
+      }
+    },
+    choices: function(){
+      if (pass){
+        return "ALL_KEYS"
+      }
+      else {
+        return "NO_KEY";
+      }
+    }
   }
 
 
@@ -232,7 +265,7 @@
 
   /* test procedure */
   var test_procedure = {
-    timeline: [choose, reveal],
+    timeline: [trial_start, choose, reveal],
     timeline_variables: test_stimuli
   }
 
