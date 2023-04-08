@@ -10,3 +10,6 @@ We are investigating how social cues may affect a participant’s curiosity towa
 - [x] add attention checks & trial durations
 - [x] datapipe
 - [ ] styling
+
+## Access Here
+https://yifanww.github.io/social-cues-and-intrinsic-curiousity/curiosity-experiment.html
