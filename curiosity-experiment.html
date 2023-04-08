@@ -135,12 +135,12 @@
     choices: ['ArrowLeft', 'ArrowRight'],
     prompt: `<p>Which one do you want to reveal?</p>`,
     data: {
+      task: "choose",
       left_img: () => jsPsych.timelineVariable("idL"),
       left_blur: () => jsPsych.timelineVariable("blur_levelL"),
       right_img: () => jsPsych.timelineVariable("idR"),
-      right_blur: () => jsPsych.timelineVariable("blue_levelR"),
-      choice: "response",
-      catch: "pass"
+      right_blur: () => jsPsych.timelineVariable("blur_levelR"),
+      catch: () => pass
     },
     on_finish: function (data) {
       choice = data.response;
@@ -221,6 +221,9 @@
       else {
         return "NO_KEY";
       }
+    },
+    data: {
+      task: "reveal"
     }
   }
 
@@ -253,7 +256,10 @@
   /* practice procedure */
   var practice_procedure = {
     timeline: [choose, reveal],
-    timeline_variables: practice_stimuli
+    timeline_variables: practice_stimuli,
+    data: {
+      phase: "practice"
+    }
   }
 
   /** Test Trials **/
@@ -271,7 +277,10 @@
   /* test procedure */
   var test_procedure = {
     timeline: [trial_start, choose, reveal],
-    timeline_variables: test_stimuli
+    timeline_variables: test_stimuli,
+    data: {
+      phase: "test"
+    }
   }
 
   /* debrief block */
