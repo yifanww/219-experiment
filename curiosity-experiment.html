@@ -76,7 +76,7 @@
     type: jsPsychHtmlKeyboardResponse,
     stimulus: `
         <p>At the start of every trial, both images will be blurred.</p>
-        <p>You will get 10 seconds to choose which image you would like to reveal.</p>
+        <p>Please take some time to look at both images. If you respond too fast, you will not see the image.</p>
         <p>The image you select will unblur itself, and the other one will stay the same.</p>
         <br>
         <p>Press any key to continue.</p>
@@ -203,7 +203,7 @@
       else {
         var html = `
         <p>You are responding too fast.  </p>
-        <p>Please spend a bit more time looking at each image. </p>
+        <p>Please spend a bit more time looking at each image next time. </p>
         `;
         return html;
       }
@@ -249,7 +249,7 @@
     stimulus: `
         <p>You have completed the tutorial!</p>
         <p>The experiment will begin starting from the next slide.</p>
-        <p>There are 21 trials in the experiment.
+        <p>There are 21 trials in the experiment.</p>
         <br>
         <p>Press any key to continue when you are ready.</p>
       `,
