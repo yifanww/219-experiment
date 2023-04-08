@@ -7,6 +7,7 @@
   <script src="https://unpkg.com/@jspsych/plugin-html-keyboard-response@1.1.2"></script>
   <script src="https://unpkg.com/@jspsych/plugin-image-keyboard-response@1.1.2"></script>
   <script src="https://unpkg.com/@jspsych/plugin-preload@1.1.2"></script>
+  <script src="https://unpkg.com/@jspsych-contrib/plugin-pipe"></script>
   <script src="create-stimulus.js"></script>
   <link href="https://unpkg.com/jspsych@7.3.1/css/jspsych.css" rel="stylesheet" type="text/css" />
 </head>
@@ -33,6 +34,10 @@
 
   /* initialize timeline */
   var timeline = [];
+
+  /* datapipe */
+  const subject_id = jsPsych.randomization.randomID(10);
+  const filename = `${subject_id}.csv`;
 
   /* initialize variables */
   var trial_n = 1;
@@ -95,17 +100,17 @@
   /** Reusable Trials **/
   /* start trial */
   var trial_start = {
-      type: jsPsychHtmlKeyboardResponse,
-      stimulus: function () {
-        var html = `
+    type: jsPsychHtmlKeyboardResponse,
+    stimulus: function () {
+      var html = `
           <p>Trial ${trial_n} of 21</p>
         `;
-        trial_n++;
-        return html;
-      },
-      choices: "NO_KEYS",
-      trial_duration: 2000
-    }
+      trial_n++;
+      return html;
+    },
+    choices: "NO_KEYS",
+    trial_duration: 2000
+  }
 
   /* choose trial*/
   var choose = {
@@ -201,7 +206,7 @@
         return html;
       }
     },
-    trial_duration: function(){
+    trial_duration: function () {
       if (pass) {
         return null;
       }
@@ -209,8 +214,8 @@
         return 2000;
       }
     },
-    choices: function(){
-      if (pass){
+    choices: function () {
+      if (pass) {
         return "ALL_KEYS"
       }
       else {
@@ -278,6 +283,16 @@
     choices: "NO_KEYS"
   };
 
+  /* collect datapipe */
+
+  const save_data = {
+    type: jsPsychPipe,
+    action: "save",
+    experiment_id: "86kfG738Wpth",
+    filename: filename,
+    data_string: () => jsPsych.data.get().csv()
+  };
+
   /* run the experiment */
   timeline.push(welcome);
   timeline.push(instruction_proc);
@@ -285,6 +300,7 @@
   timeline.push(practice_end);
   timeline.push(test_procedure);
   timeline.push(debrief_block);
+  timeline.push(save_data);
   jsPsych.run(timeline);
 
 </script>
