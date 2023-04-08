@@ -137,8 +137,10 @@
     data: {
       task: "choose",
       left_img: () => jsPsych.timelineVariable("idL"),
+      left_upvote: ()=> jsPsych.timelineVariable("n_of_upvotesL"),
       left_blur: () => jsPsych.timelineVariable("blur_levelL"),
       right_img: () => jsPsych.timelineVariable("idR"),
+      right_upvote: ()=> jsPsych.timelineVariable("n_of_upvotesR"),
       right_blur: () => jsPsych.timelineVariable("blur_levelR"),
       catch: () => pass
     },
