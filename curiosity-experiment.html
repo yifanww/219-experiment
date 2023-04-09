@@ -70,45 +70,17 @@
         <br>
         <p>Press any key to continue.</p>
       `,
-    choices: "NO_KEYS",
-    trial_duration: 2000,
   };
-
-  var instruction_1_alt = {
-    type: jsPsychHtmlKeyboardResponse,
-    stimulus: `
-        <p>In each trial, you will see two different images sourced from a popular social platform.</p>
-        <p>Each image will have an upvote count above it.</p>
-        <p>An upvote is a like given by users of the platform and helps promote quality content and discussion on the platform.</p>
-        <p>A higher upvote count means more people like the post and recommend it to other users.</p>
-        <br>
-        <p>Press any key to continue.</p>
-      `,
-  };
-
 
   var instruction_2 = {
     type: jsPsychHtmlKeyboardResponse,
     stimulus: `
         <p>At the start of every trial, both images will be blurred.</p>
+        <p>Please take some time to look at both images. If you respond too fast, you will not see the image.</p>
         <p>The image you select will unblur itself, and the other one will stay the same.</p>
-        <p>Please take some time to consider both images and their upvote counts. If you respond too fast, you will not see the image.</p>
         <br>
         <p>Press any key to continue.</p>
       `,
-    choices: "NO_KEYS",
-    trial_duration: 2000,
-  };
-
-  var instruction_2_alt = {
-    type: jsPsychHtmlKeyboardResponse,
-    stimulus: `
-        <p>At the start of every trial, both images will be blurred.</p>
-        <p>The image you select will unblur itself, and the other one will stay the same.</p>
-        <p>Please take some time to consider both images and their upvote counts. If you respond too fast, you will not see the image.</p>
-        <br>
-        <p>Press any key to continue.</p>
-      `
   };
 
   var instruction_3 = {
@@ -119,23 +91,10 @@
         <br>
         <p>On the next slide, you will see the images. Press any key to continue.</p>
       `,
-    choices: "NO_KEYS",
-    trial_duration: 2000,
   };
-
-  var instruction_3_alt = {
-    type: jsPsychHtmlKeyboardResponse,
-    stimulus: `
-        <p>We will now go through 2 practice trials.</p>
-        <p>Press “←” on your keyboard to select the left image or “→” to select the right image.</p>
-        <br>
-        <p>On the next slide, you will see the images. Press any key to continue.</p>
-      `
-  };
-
 
   var instruction_proc = {
-    timeline: [instruction_1, instruction_1_alt, instruction_2, instruction_2_alt, instruction_3, instruction_3_alt]
+    timeline: [instruction_1, instruction_2, instruction_3]
   }
 
   /** Reusable Trials **/
@@ -150,7 +109,7 @@
       return html;
     },
     choices: "NO_KEYS",
-    trial_duration: 1000
+    trial_duration: 2000
   }
 
   /* choose trial*/
@@ -170,18 +129,18 @@
               <img src= ${jsPsych.timelineVariable('imgR')} style="width:60%; filter: blur(${jsPsych.timelineVariable('blur_levelR') + "px"})">
             </div>
           </div>
-          <p>Which one do you want to reveal?</p>
           `;
       return html;
     },
     choices: ['ArrowLeft', 'ArrowRight'],
+    prompt: `<p>Which one do you want to reveal?</p>`,
     data: {
       task: "choose",
       left_img: () => jsPsych.timelineVariable("idL"),
-      left_upvote: () => jsPsych.timelineVariable("n_of_upvotesL"),
+      left_upvote: ()=> jsPsych.timelineVariable("n_of_upvotesL"),
       left_blur: () => jsPsych.timelineVariable("blur_levelL"),
       right_img: () => jsPsych.timelineVariable("idR"),
-      right_upvote: () => jsPsych.timelineVariable("n_of_upvotesR"),
+      right_upvote: ()=> jsPsych.timelineVariable("n_of_upvotesR"),
       right_blur: () => jsPsych.timelineVariable("blur_levelR"),
       check: () => pass
     },
@@ -192,7 +151,7 @@
         pass = false;
       }
       else {
-        data.catch = true;
+        data.check = true;
         pass = true;
       }
     }
@@ -261,6 +220,7 @@
         return "NO_KEY";
       }
     },
+    prompt: `<p>Press any key to continue</p>`,
     data: {
       task: "reveal"
     }
@@ -271,13 +231,13 @@
   /* practice stimulus variable */
   var practice_stimuli_1 = [
     {
-      imgL: "imgs/img-prac-1.jpg", n_of_upvotesL: 78, blur_levelL: 40,
+      imgL: "imgs/img-prac-1.png", n_of_upvotesL: 2458, blur_levelL: 40,
       imgR: "imgs/img-prac-2.png", n_of_upvotesR: 898, blur_levelR: 20
     }
   ];
 
   var practice_stimuli_2 = [
-    {
+  {
       imgL: "imgs/img-prac-3.png", n_of_upvotesL: 1149, blur_levelL: 10,
       imgR: "imgs/img-prac-4.png", n_of_upvotesR: 1529, blur_levelR: 15
     }
@@ -295,9 +255,9 @@
       `,
   }
 
-  var trial_break = {
+  var practice_break = {
     type: jsPsychHtmlKeyboardResponse,
-    stimulus: `
+    stimulus:`
         <p>Great! Now try that with a different pair of images.</p>
         <br>
         <p>Press any key to continue.</p>
@@ -306,38 +266,21 @@
 
   /* practice procedure */
   var practice_procedure_1 = {
-    timeline: [choose, reveal],
+    timeline: [choose, reveal, practice_break],
     timeline_variables: practice_stimuli_1,
     data: {
       phase: "practice_1"
-    },
-    loop_function: function (data) {
-      if (pass == false) {
-        return true;
-      } else {
-        return false;
-      }
     }
   }
 
-  var practice_break = {
-    timeline: [trial_break]
-  }
   var practice_procedure_2 = {
     timeline: [choose, reveal],
     timeline_variables: practice_stimuli_2,
     data: {
       phase: "practice_2"
-    },
-    loop_function: function (data) {
-      if (pass == false) {
-        return true;
-      } else {
-        return false;
-      }
     }
   }
-
+  
 
   /** Test Trials **/
   /* test stimulus variable */
@@ -383,7 +326,6 @@
   timeline.push(welcome);
   timeline.push(instruction_proc);
   timeline.push(practice_procedure_1);
-  timeline.push(practice_break);
   timeline.push(practice_procedure_2);
   timeline.push(practice_end);
   timeline.push(test_procedure);
