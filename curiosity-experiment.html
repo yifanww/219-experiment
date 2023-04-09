@@ -112,15 +112,6 @@
     trial_duration: 2000
   };
   
-  var instruction_proc = {
-    timeline: [
-      instruction_1, 
-      instruction_1_5, 
-      instruction_2, 
-      instruction_3
-    ]
-  }
-
   /** Reusable Trials **/
   /* start trial */
   var trial_start = {
@@ -363,7 +354,10 @@
 
   /* run the experiment */
   timeline.push(welcome);
-  timeline.push(instruction_proc);
+  timeline.push(instruction_1);
+  timeline.push(instruction_1_5);
+  timeline.push(instruction_2);
+  timeline.push(instruction_3);
   timeline.push(practice_procedure_1);
   timeline.push(practice_procedure_2);
   timeline.push(practice_end);
