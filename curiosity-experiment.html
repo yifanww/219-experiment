@@ -232,15 +232,18 @@
 
   /** Practice Trials **/
   /* practice stimulus variable */
-  var practice_stimuli = [
+  var practice_stimuli_1 = [
     {
       imgL: "imgs/img-prac-1.png", n_of_upvotesL: 2458, blur_levelL: 40,
       imgR: "imgs/img-prac-2.png", n_of_upvotesR: 898, blur_levelR: 20
-    },
-    {
+    }
+  ];
+
+  var practice_stimuli_2 = [
+  {
       imgL: "imgs/img-prac-3.png", n_of_upvotesL: 1149, blur_levelL: 10,
       imgR: "imgs/img-prac-4.png", n_of_upvotesR: 1529, blur_levelR: 15
-    },
+    }
   ];
 
   /* trial practice end */
@@ -255,14 +258,32 @@
       `,
   }
 
+  var practice_break = {
+    type: jsPsychHtmlKeyboardResponse,
+    stimulus:`
+        <p>Great! Now try that with a different pair of images.</p>
+        <br>
+        <p>Press any key to continue.</p>
+      `,
+  }
+
   /* practice procedure */
-  var practice_procedure = {
-    timeline: [choose, reveal],
-    timeline_variables: practice_stimuli,
+  var practice_procedure_1 = {
+    timeline: [choose, reveal, practice_break],
+    timeline_variables: practice_stimuli_1,
     data: {
-      phase: "practice"
+      phase: "practice_1"
     }
   }
+
+  var practice_procedure_2 = {
+    timeline: [choose, reveal],
+    timeline_variables: practice_stimuli_2,
+    data: {
+      phase: "practice_2"
+    }
+  }
+  
 
   /** Test Trials **/
   /* test stimulus variable */
@@ -307,7 +328,8 @@
   /* run the experiment */
   timeline.push(welcome);
   timeline.push(instruction_proc);
-  timeline.push(practice_procedure);
+  timeline.push(practice_procedure_1);
+  timeline.push(practice_procedure_2);
   timeline.push(practice_end);
   timeline.push(test_procedure);
   timeline.push(save_data);
