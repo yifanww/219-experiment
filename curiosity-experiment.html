@@ -129,24 +129,24 @@
               <img src= ${jsPsych.timelineVariable('imgR')} style="width:60%; filter: blur(${jsPsych.timelineVariable('blur_levelR') + "px"})">
             </div>
           </div>
+          <p>Which one do you want to reveal?</p>
           `;
       return html;
     },
     choices: ['ArrowLeft', 'ArrowRight'],
-    prompt: `<p>Which one do you want to reveal?</p>`,
     data: {
       task: "choose",
       left_img: () => jsPsych.timelineVariable("idL"),
-      left_upvote: ()=> jsPsych.timelineVariable("n_of_upvotesL"),
+      left_upvote: () => jsPsych.timelineVariable("n_of_upvotesL"),
       left_blur: () => jsPsych.timelineVariable("blur_levelL"),
       right_img: () => jsPsych.timelineVariable("idR"),
-      right_upvote: ()=> jsPsych.timelineVariable("n_of_upvotesR"),
+      right_upvote: () => jsPsych.timelineVariable("n_of_upvotesR"),
       right_blur: () => jsPsych.timelineVariable("blur_levelR"),
       check: () => pass
     },
     on_finish: function (data) {
       choice = data.response;
-      if (data.rt < 500) {
+      if (data.rt < 1000) {
         data.check = false;
         pass = false;
       }
@@ -176,6 +176,7 @@
               <img src= ${jsPsych.timelineVariable('imgR')} style="width:60%; filter: blur(${jsPsych.timelineVariable('blur_levelR') + "px"})">
             </div>
           </div>
+          <p>Press any key to continue</p>
           `;
         }
         else if (choice == 'arrowright') {
@@ -192,6 +193,7 @@
               <img src= ${jsPsych.timelineVariable('imgR')} style="width:50%">
             </div>
           </div>
+          <p>Press any key to continue</p>
           `;
         }
         return html;
@@ -220,7 +222,6 @@
         return "NO_KEY";
       }
     },
-    prompt: `<p>Press any key to continue</p>`,
     data: {
       task: "reveal"
     }
@@ -237,7 +238,7 @@
   ];
 
   var practice_stimuli_2 = [
-  {
+    {
       imgL: "imgs/img-prac-3.png", n_of_upvotesL: 1149, blur_levelL: 10,
       imgR: "imgs/img-prac-4.png", n_of_upvotesR: 1529, blur_levelR: 15
     }
@@ -255,9 +256,9 @@
       `,
   }
 
-  var practice_break = {
+  var trial_break = {
     type: jsPsychHtmlKeyboardResponse,
-    stimulus:`
+    stimulus: `
         <p>Great! Now try that with a different pair of images.</p>
         <br>
         <p>Press any key to continue.</p>
@@ -266,21 +267,38 @@
 
   /* practice procedure */
   var practice_procedure_1 = {
-    timeline: [choose, reveal, practice_break],
+    timeline: [choose, reveal],
     timeline_variables: practice_stimuli_1,
     data: {
       phase: "practice_1"
+    },
+    loop_function: function (data) {
+      if (pass == false) {
+        return true;
+      } else {
+        return false;
+      }
     }
   }
 
+  var practice_break = {
+    timeline: [trial_break]
+  }
   var practice_procedure_2 = {
     timeline: [choose, reveal],
     timeline_variables: practice_stimuli_2,
     data: {
       phase: "practice_2"
+    },
+    loop_function: function (data) {
+      if (pass == false) {
+        return true;
+      } else {
+        return false;
+      }
     }
   }
-  
+
 
   /** Test Trials **/
   /* test stimulus variable */
@@ -326,6 +344,7 @@
   timeline.push(welcome);
   timeline.push(instruction_proc);
   timeline.push(practice_procedure_1);
+  timeline.push(practice_break);
   timeline.push(practice_procedure_2);
   timeline.push(practice_end);
   timeline.push(test_procedure);
