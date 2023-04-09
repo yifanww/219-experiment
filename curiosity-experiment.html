@@ -73,6 +73,19 @@
     choices: "NO_KEYS",
     trial_duration: 2000
   };
+  
+  var instruction_1_alt = {
+    type: jsPsychHtmlKeyboardResponse,
+    stimulus: `
+        <p>In each trial, you will see two different images sourced from a popular social platform.</p>
+        <p>Each image will have an upvote count above it.</p>
+        <p>An upvote is a like given by users of the platform and helps promote quality content and discussion on the platform.</p>
+        <p>A higher upvote count means more people like the post and recommend it to other users.</p>
+        <br>
+        <p>Press any key to continue.</p>
+      `,
+    choices: "ALL_KEYS",
+  };
 
   var instruction_2 = {
     type: jsPsychHtmlKeyboardResponse,
@@ -86,6 +99,18 @@
     choices: "NO_KEYS",
     trial_duration: 2000
   };
+  
+  var instruction_2_alt = {
+    type: jsPsychHtmlKeyboardResponse,
+    stimulus: `
+        <p>At the start of every trial, both images will be blurred.</p>
+        <p>Please take some time to look at both images. If you respond too fast, you will not see the image.</p>
+        <p>The image you select will unblur itself, and the other one will stay the same.</p>
+        <br>
+        <p>Press any key to continue.</p>
+      `,
+    choices: "ALL_KEYS",
+  };
 
   var instruction_3 = {
     type: jsPsychHtmlKeyboardResponse,
@@ -98,9 +123,27 @@
     choices: "NO_KEYS",
     trial_duration: 2000
   };
+  
+  var instruction_3_alt = {
+    type: jsPsychHtmlKeyboardResponse,
+    stimulus: `
+        <p>We will now go through 2 practice trials.</p>
+        <p>Press “←” on your keyboard to select the left image or “→” to select the right image.</p>
+        <br>
+        <p>On the next slide, you will see the images. Press any key to continue.</p>
+      `,
+    choices: "ALL_KEYS",
+  };
 
   var instruction_proc = {
-    timeline: [instruction_1, instruction_2, instruction_3]
+    timeline: [
+      instruction_1, 
+      instruction_1_alt, 
+      instruction_2, 
+      instruction_2_alt, 
+      instruction_3, 
+      instruction_3_alt
+    ]
   }
 
   /** Reusable Trials **/
