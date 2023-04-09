@@ -187,12 +187,12 @@
     },
     on_finish: function (data) {
       choice = data.response;
-      if (data.rt < 1000) {
+      if (data.rt < 500) {
         data.check = false;
         pass = false;
       }
       else {
-        data.check = true;
+        data.catch = true;
         pass = true;
       }
     }
@@ -217,7 +217,6 @@
               <img src= ${jsPsych.timelineVariable('imgR')} style="width:60%; filter: blur(${jsPsych.timelineVariable('blur_levelR') + "px"})">
             </div>
           </div>
-          <p>Press any key to continue</p>
           `;
         }
         else if (choice == 'arrowright') {
@@ -234,7 +233,6 @@
               <img src= ${jsPsych.timelineVariable('imgR')} style="width:50%">
             </div>
           </div>
-          <p>Press any key to continue</p>
           `;
         }
         return html;
