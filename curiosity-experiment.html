@@ -147,11 +147,11 @@
     on_finish: function (data) {
       choice = data.response;
       if (data.rt < 500) {
-        data.catch = false;
+        data.check = false;
         pass = false;
       }
       else {
-        data.catch = true;
+        data.check = true;
         pass = true;
       }
     }
@@ -176,8 +176,6 @@
               <img src= ${jsPsych.timelineVariable('imgR')} style="width:60%; filter: blur(${jsPsych.timelineVariable('blur_levelR') + "px"})">
             </div>
           </div>
-          <p>You chose the left image</p>
-          <p>Press any key to continue</p>
           `;
         }
         else if (choice == 'arrowright') {
@@ -194,8 +192,6 @@
               <img src= ${jsPsych.timelineVariable('imgR')} style="width:50%">
             </div>
           </div>
-          <p>You chose the right image</p>
-          <p>Press any key to continue</p>
           `;
         }
         return html;
@@ -224,6 +220,7 @@
         return "NO_KEY";
       }
     },
+    prompt: `<p>Press any key to continue</p>`,
     data: {
       task: "reveal"
     }
