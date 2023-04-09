@@ -1,6 +1,6 @@
 /* variable declaration */
 var practice_img = [ // images used in practice trials
-    'imgs/img-prac-1.png',
+    'imgs/img-prac-1.jpg',
     'imgs/img-prac-2.png',
     'imgs/img-prac-3.png',
     'imgs/img-prac-4.png']
