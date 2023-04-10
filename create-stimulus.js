@@ -57,7 +57,7 @@ var stimuli_set = [ // array of the images along with their upvotes **upcoming i
     { id: 4, file: "imgs/img-4.png", upvote: 1617 },
     { id: 5, file: "imgs/img-5.png", upvote: 1302 },
     { id: 6, file: "imgs/img-6.png", upvote: 1072 },
-    { id: 7, file: "imgs/img-7.png", upvote: 1055 },
+    { id: 7, file: "imgs/img-7.png", upvote: 1006 },
     { id: 8, file: "imgs/img-8.png", upvote: 976 },
     { id: 9, file: "imgs/img-9.png", upvote: 686 },
     { id: 10, file: "imgs/img-10.png", upvote: 3817 },
