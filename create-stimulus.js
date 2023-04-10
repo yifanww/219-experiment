@@ -52,7 +52,7 @@ var img_set = [ // images used in actual experiment
 
 var stimuli_set = [ // array of the images along with their upvotes **upcoming images & upvote counts add here**
     { id: 1, file: "imgs/img-1.png", upvote: 2059 },
-    { id: 1, file: "imgs/img-2.png", upvote: 2979 },
+    { id: 1, file: "imgs/img-2.png", upvote: 1809 },
     { id: 3, file: "imgs/img-3.png", upvote: 1756 },
     { id: 4, file: "imgs/img-4.png", upvote: 1617 },
     { id: 5, file: "imgs/img-5.png", upvote: 1302 },
