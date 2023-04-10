@@ -11,4 +11,4 @@ We are investigating how social cues may affect a participant’s curiosity towa
 - [x] update how the data is collected in choose trials
 - [x] add attention checks & trial durations
 - [x] datapipe
-- [ ] styling
+- [x] styling
