@@ -383,8 +383,11 @@
   {
     type: jsPsychHtmlKeyboardResponse,
     stimulus: `
-        <p>Thank you for participating!</p>`,
-    choices: "NO_KEYS"
+        <p>Thank you for participating!</p>
+        <br>
+        <p>Press any key to return to Prolific.</p>
+        `,
+    choices: "ALL_KEYS"
   };
 
   /* collect datapipe */
@@ -406,6 +409,7 @@
   timeline.push(practice_end);
   timeline.push(test_procedure);
   timeline.push(save_data);
+  timeline.push(debrief_block);
   jsPsych.run(timeline);
 
 </script>
