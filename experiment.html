@@ -29,6 +29,10 @@
   var study_id = jsPsych.data.getURLVariable('STUDY_ID');
   var session_id = jsPsych.data.getURLVariable('SESSION_ID');
 
+  if (subject_id == null){
+    subject_id = jsPsych.randomization.randomID(10);
+  };
+
   jsPsych.data.addProperties({
     subject_id: subject_id,
     study_id: study_id,
