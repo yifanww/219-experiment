@@ -50,8 +50,8 @@
   var pass; // check state
   var choice; // participant's choice
   var shuffled_set = chunk(shuffle(stimuli_set), 2); // generate randomized image pairs
-  var delta_blur = randomBlur(0, 50); // generate randomized delta blur from 0 to 50
-  var blur = blur_pair(delta_blur, 1, 50); // first blur: target value (random 1-50), second blur: target value + delta blur; shuffle within pair; the overall range is 1 to 100
+  var delta_blur = randomBlur(0, 25); // generate randomized delta blur from 0 to 25
+  var blur = blur_pair(delta_blur, 3, 25); // first blur: target value (random 3-25), second blur: target value + delta blur; shuffle within pair; the overall range is 3 to 50
 
   /* preload images */
   var preload = {
