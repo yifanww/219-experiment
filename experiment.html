@@ -47,10 +47,11 @@
 
   /* initialize variables */
   var trial_n = 1;
-  var pass;
+  var pass; // check state
   var choice; // participant's choice
   var shuffled_set = chunk(shuffle(stimuli_set), 2); // generate randomized image pairs
-  var blurriness = chunk(randomBlur(5, 50), 2); // generate randomized levels of blurriness from 5 to 50
+  var delta_blur = randomBlur(0, 50); // generate randomized delta blur from 0 to 50
+  var blur = blur_pair(delta_blur, 1, 50); // first blur: target value (random 1-50), second blur: target value + delta blur; shuffle within pair; the overall range is 1 to 100
 
   /* preload images */
   var preload = {
@@ -367,8 +368,8 @@
   for (let i = 0; i < shuffled_set.length; i++) {
     test_stimuli.push(
       {
-        idL: shuffled_set[i][0].id, imgL: shuffled_set[i][0].file, n_of_upvotesL: shuffled_set[i][0].upvote, blur_levelL: blurriness[i][0],
-        idR: shuffled_set[i][1].id, imgR: shuffled_set[i][1].file, n_of_upvotesR: shuffled_set[i][1].upvote, blur_levelR: blurriness[i][1]
+        idL: shuffled_set[i][0].id, imgL: shuffled_set[i][0].file, n_of_upvotesL: shuffled_set[i][0].upvote, blur_levelL: blur[i][0],
+        idR: shuffled_set[i][1].id, imgR: shuffled_set[i][1].file, n_of_upvotesR: shuffled_set[i][1].upvote, blur_levelR: blur[i][1]
       }
     )
   };

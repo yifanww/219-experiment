@@ -120,9 +120,21 @@ function chunk(arr, chunkSize) {
 // create an array of numbers between "min" and "max"
 function randomBlur(min, max) {
     var array = [];
-    for (let i = 0; i < stimuli_set.length; i++) {
+    for (let i = 0; i < shuffled_set.length; i++) {
         let randomNumber = Math.floor(Math.random() * (max - min + 1)) + min;
         array.push(randomNumber);
+    }
+    return array;
+}
+
+function blur_pair(arr, min, max){
+    var array =[];
+    for (var i = 0; i < arr.length; i++) {
+        let first_blur = Math.floor(Math.random() * (max - min + 1)) + min;
+        let second_blur = first_blur + arr[i];
+        var pair = [first_blur, second_blur];
+        pair = shuffle(pair);
+        array.push(pair);
     }
     return array;
 }
