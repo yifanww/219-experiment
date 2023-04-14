@@ -1,0 +1,8 @@
+"0","#| label: Clean up data frame"
+"0","#| echo: false"
+"0","data.clean <- data %>% "
+"0","  select(-c(""success"", ""timeout"", ""failed_images"", ""failed_audio"", ""failed_video"", ""trial_type"", ""trial_index"", ""time_elapsed"", ""internal_node_id"", ""study_id"", ""session_id"", ""stimulus"")) %>% "
+"0","  filter(phase == ""test"", "
+"0","         task == ""choose"") %>% "
+"0","  pivot_longer(c(""left_upvote"", ""right_upvote""), "
+"0","               names_to = ""img_pos"", values_to = ""upvotes"")"

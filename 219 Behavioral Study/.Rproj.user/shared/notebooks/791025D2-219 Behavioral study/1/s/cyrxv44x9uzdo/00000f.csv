@@ -1,0 +1,5 @@
+"0","#| label: Concatenate data files into one file"
+"0","#| echo: false"
+"0","files <- list.files(path = ""data/"", full.names = T)"
+"0","data <- lapply(files, fromJSON) %>% "
+"0","  bind_rows()"
