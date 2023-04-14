@@ -3,7 +3,7 @@
     "path": "~/Desktop/219-experiment/219 Behavioral Study/219 Behavioral study.qmd",
     "project_path": "219 Behavioral study.qmd",
     "type": "quarto_markdown",
-    "hash": "4200598833",
+    "hash": "4109279823",
     "contents": "",
     "dirty": false,
     "created": 1681509938332.0,
@@ -17,15 +17,15 @@
         "docOutlineVisible": "1",
         "cursorPosition": "0,0",
         "scrollLine": "0",
-        "rmdVisualModeLocation": "95:0",
+        "rmdVisualModeLocation": "2155:2034",
         "rmdVisualCollapsedChunks": ""
     },
     "folds": "",
-    "lastKnownWriteTime": 1681509983,
+    "lastKnownWriteTime": 1681513877,
     "encoding": "UTF-8",
     "collab_server": "",
     "source_window": "",
-    "last_content_update": 1681509983568,
+    "last_content_update": 1681513877442,
     "read_only": false,
     "read_only_alternatives": []
 }

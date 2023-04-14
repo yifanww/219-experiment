@@ -41,16 +41,69 @@ data <- lapply(files, fromJSON) %>%
 data.clean <- data %>% 
   select(-c("success", "timeout", "failed_images", "failed_audio", "failed_video", "trial_type", "trial_index", "time_elapsed", "internal_node_id", "study_id", "session_id", "stimulus")) %>% 
   filter(phase == "test", 
-         task == "choose") %>% 
-  pivot_longer(c("left_upvote", "right_upvote"), 
-               names_to = "img_pos", values_to = "upvotes")
+         task == "choose")
 ```
 
 ```{r}
-#| label: Upvote graph!
+#| label: filter failed participants
 #| echo: false
-data.clean <- data.clean %>% 
-  mutate(revealed = ifelse(((response == "arrowleft" && img_pos == "left_upvote") | (response == "arrowright" && img_pos == "right_upvote")), TRUE, FALSE))
+
+data.exclude <- data.clean %>%
+  group_by(subject_id) %>%
+  mutate(n_pass = sum(check == FALSE)) %>%
+  filter(n_pass > 3)
+
+exclude.subjects <- data.exclude %>%
+  pull(subject_id) %>%
+  unique() %>%
+  length()
+
+data.filtered <- data.clean %>%
+  filter(!subject_id %in% exclude.subjects) %>%
+  filter(check == TRUE)
+```
+
+```{r}
+#| label: tidy up the data
+#| echo: false
+
+data.tidyup <- data.filtered %>% 
+  pivot_longer(cols = starts_with("left_") | starts_with("right_"), 
+               names_to = c("pos", ".value"), names_sep = "_") %>%
+  mutate(revealed = ifelse(((response == "arrowleft" & pos == "left") | (response == "arrowright" & pos == "right")), TRUE, FALSE)) %>%
+  select(subject_id, pos, upvote, blur, img, revealed) 
+```
+
+```{r}
+#| upvote graph
+#| echo: false
+graph.prep <- data.tidyup %>%
+  group_by(upvote) %>%
+  summarize(percent = mean(revealed == TRUE)) %>%
+  ungroup()
+
+ggplot(graph.prep, aes(x = upvote, y = percent))+
+  geom_point() +
+  stat_smooth(method = "loess", se = TRUE) +
+  xlab("Upvote Count") +
+  ylab("# of reveals / # of appearance") 
+
+```
+
+```{r}
+#| upvote graph
+#| echo: false
+graph.prep2 <- data.tidyup %>%
+  group_by(blur) %>%
+  summarize(percent = mean(revealed == TRUE)) %>%
+  ungroup()
+
+ggplot(graph.prep2, aes(x = blur, y = percent))+
+  geom_point() +
+  stat_smooth(method = "loess", se = TRUE) +
+  xlab("Blurriness") +
+  ylab("# of reveals / # of appearance") 
+
 ```
 
 ## Methods
