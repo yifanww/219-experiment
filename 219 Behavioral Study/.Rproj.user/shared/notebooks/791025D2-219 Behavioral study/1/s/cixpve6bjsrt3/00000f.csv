@@ -1,0 +1,6 @@
+"0","#| label: Count the number of subjects"
+"0","#| echo: false"
+"0","n.subjects <- data %>%"
+"0","  pull(subject_id) %>%"
+"0","  unique() %>%"
+"0","  length()"

@@ -18,8 +18,6 @@ library(rjson)
 library(jsonlite)
 library(lme4)
 library(lmerTest)
-library(sjPlot)
-library(car)
 ```
 
 ```{r}
@@ -48,7 +46,9 @@ data.clean <- data %>%
          task == "choose")
 ```
 
+
 ## Methods
+
 
 ```{r}
 #| label: Count the number of subjects
@@ -59,6 +59,7 @@ n.subjects <- data %>%
   length()
 ```
 
+
 ### Participants
 
 `r n.subjects` Prolific members participated in the study.
@@ -67,8 +68,9 @@ n.subjects <- data %>%
 
 Reddit and stuff.
 
+
 ```{r}
-#| label: filter failed participants; trigger the check screen more than 3 times
+#| label: filter failed participants
 #| echo: false
 
 data.exclude <- data.clean %>%
@@ -139,11 +141,7 @@ ggplot(graph.prep2, aes(x = blur, y = percent))+
 
 data.lme <- data.filtered %>%
   select(response, subject_id, left_upvote, right_upvote, left_blur, right_blur, left_img, right_img) %>%
-  mutate(delta_upvote = left_upvote-right_upvote,
-         delta_upvote = factor(delta_upvote),
-         delta_blur = left_blur-right_blur,
-         delta_blur = factor(delta_blur),
-         response = dummy(response),
+  mutate(response = dummy(response),
          subject_id = factor(subject_id),
          left_upvote = factor(left_upvote),
          right_upvote = factor(right_upvote),
@@ -152,18 +150,17 @@ data.lme <- data.filtered %>%
          left_img = factor(left_img),
          right_img = factor(right_img))
 
-lme_result = glmer(response ~
-                      left_upvote +
-                      right_upvote +
-                      left_blur +
-                      right_blur +
-                      (1 | subject_id),
-                    family = binomial,
-                    data = data.lme,
-                    nAGQ=0,
-                    control=glmerControl(optimizer = "nloptwrap")
-                    )
-print(lme_result)
+lme_result = lmer(response~
+                    left_upvote+
+                    right_upvote+
+                    left_blur+
+                    right_blur+
+                    (left_upvote-right_upvote)+
+                    (left_blur-right_upvote)+
+                    ((left_upvote-right_upvote)*(left_blur-right_upvote))+
+                    (1|subject_id), 
+                  data=data.lme)
+
 anova(lme_result)
-plot(lme_result)
 ```
+
