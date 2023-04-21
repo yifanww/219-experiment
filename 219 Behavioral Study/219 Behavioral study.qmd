@@ -103,16 +103,34 @@ data.tidyup <- data.filtered %>%
 
 
 graph.prep <- data.tidyup %>%
-  group_by(upvote) %>%
+  group_by(upvote, pos) %>%
   summarize(percent = mean(revealed == TRUE)) %>%
   ungroup()
 
-ggplot(graph.prep, aes(x = upvote, y = percent))+
+ggplot(graph.prep, aes(x = upvote, y = percent, color = pos))+
+  geom_point() +
+  stat_smooth(method = "lm", se = TRUE) +
+  xlab("Upvote Count") +
+  ylab("# of reveals / # of appearance") +
+  scale_color_manual(values = c("magenta", "navy"), name = "Side")
+
+```
+```{r}
+#| label: upvote graph using loess
+
+
+graph.prep <- data.tidyup %>%
+  group_by(upvote, pos) %>%
+  summarize(percent = mean(revealed == TRUE)) %>%
+  ungroup()
+
+ggplot(graph.prep, aes(x = upvote, y = percent, color = pos))+
   geom_point() +
   stat_smooth(method = "loess", se = TRUE) +
   xlab("Upvote Count") +
-  ylab("# of reveals / # of appearance") 
-
+  ylab("# of reveals / # of appearance") +
+  scale_color_manual(values = c("magenta", "navy"), name = "Side")
+ 
 ```
 
 ```{r}
@@ -121,17 +139,36 @@ ggplot(graph.prep, aes(x = upvote, y = percent))+
 
 
 graph.prep2 <- data.tidyup %>%
-  group_by(blur) %>%
+  group_by(blur, pos) %>%
   summarize(percent = mean(revealed == TRUE)) %>%
   ungroup()
 
-ggplot(graph.prep2, aes(x = blur, y = percent))+
+ggplot(graph.prep2, aes(x = blur, y = percent, color = pos))+
   geom_point() +
-  stat_smooth(method = "loess", se = TRUE) +
-  xlab("Blurriness") +
-  ylab("# of reveals / # of appearance") 
+  stat_smooth(method = "lm", se = TRUE) +
+  xlab("Blurriness (px)") +
+  ylab("# of reveals / # of appearance") +
+  scale_color_manual(values = c("magenta", "navy"), name = "Side")
 
 ```
+
+```{r}
+#| label: blur graph using loess
+#| echo: false
+
+graph.prep2 <- data.tidyup %>%
+  group_by(blur, pos) %>%
+  summarize(percent = mean(revealed == TRUE)) %>%
+  ungroup()
+
+ggplot(graph.prep2, aes(x = blur, y = percent, color = pos))+
+  geom_point() +
+  stat_smooth(method = "loess", se = TRUE) +
+  xlab("Blurriness (px)") +
+  ylab("# of reveals / # of appearance") +
+  scale_color_manual(values = c("magenta", "navy"), name = "Side")
+  
+ ```
 
 ```{r}
 #| label: Mixed Effect Model prep
