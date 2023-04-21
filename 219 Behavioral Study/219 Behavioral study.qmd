@@ -204,3 +204,19 @@ print(lme_result)
 anova(lme_result)
 plot(lme_result)
 ```
+
+```{r}
+#| label: Mixed effect model visualization
+#| echo: false
+
+ggplot(data = data.lme) +
+  geom_jitter(aes(x=left_upvote, y=response))+
+  stat_smooth(aes(x=left_upvote, y=response), 
+              method = "lm",
+              se = TRUE)
+ggplot(data=data.lme) +
+  geom_jitter(aes(x=right_upvote, y=response))+
+  stat_smooth(aes(x=right_upvote, y=response), 
+              method = "lm",
+              se = TRUE)
+```
